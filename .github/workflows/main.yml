@@ -1,8 +1,9 @@
 name: test project
 on:
   push:
-    branches:
-      - main
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
 jobs:
   test:
     name: test project
