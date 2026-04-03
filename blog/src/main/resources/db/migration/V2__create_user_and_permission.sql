@@ -1,0 +1,28 @@
+CREATE SEQUENCE IF NOT EXISTS permission_id_seq START WITH 1 INCREMENT BY 50;
+
+CREATE SEQUENCE IF NOT EXISTS role_id_seq START WITH 1 INCREMENT BY 50;
+
+CREATE TABLE permissions
+(
+    id      SMALLINT     NOT NULL,
+    role_id SMALLINT,
+    name    VARCHAR(255) NOT NULL,
+    scope   VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_permissions PRIMARY KEY (id)
+);
+
+CREATE TABLE roles
+(
+    id   SMALLINT     NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_roles PRIMARY KEY (id)
+);
+
+ALTER TABLE users
+    ADD role_id SMALLINT;
+
+ALTER TABLE permissions
+    ADD CONSTRAINT FK_PERMISSIONS_ON_ROLE FOREIGN KEY (role_id) REFERENCES roles (id);
+
+ALTER TABLE users
+    ADD CONSTRAINT FK_USERS_ON_ROLE FOREIGN KEY (role_id) REFERENCES roles (id);

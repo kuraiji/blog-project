@@ -1,0 +1,93 @@
+Database Schema:
+users
+    - id: bigint
+    - handle: string
+    - email: string
+    - hashed_password: string (72 limit)
+
+roles
+    - id: smallint
+    - name: string
+
+users_roles
+    - user_id: bigint
+    - role_id: smallint
+
+permissions
+    - id: smallint
+    - name: string
+
+roles_permissions
+    - role_id: smallint
+    - permission_id: smallint
+    - scope: string/enum
+
+posts
+    - id: UUID v7
+    - title: string
+    - body: string
+    - created: timestamp
+    - updated: timestamp
+
+comments
+    - id: smallint
+    - post_id: UUID v7
+    - content: string
+    - posted: timestamp
+    - updated: timestamp
+
+REST Schema:
+/users
+    - GET
+/users/{id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/roles
+    - GET
+/roles/{id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/permissions
+    - GET
+/permissions/{id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/posts
+    - GET
+/posts/{id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/comments/{post_id}
+    - GET
+/comments/{post_id}/{id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/roles_permissions/{role_id}
+    - GET
+/roles_permissions/{role_id}/{permission_id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/users_roles/{user_id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
