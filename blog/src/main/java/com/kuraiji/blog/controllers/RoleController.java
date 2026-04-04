@@ -2,6 +2,7 @@ package com.kuraiji.blog.controllers;
 
 import com.kuraiji.blog.domain.dto.RoleDto;
 import com.kuraiji.blog.domain.request.CreateRoleRequest;
+import com.kuraiji.blog.exception.RoleNotFoundException;
 import com.kuraiji.blog.services.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class RoleController {
     public ResponseEntity<RoleDto> getRole(@PathVariable Short id) {
         Optional<RoleDto> foundRole = roleService.findOne(id);
         return foundRole.map(roleDto -> new ResponseEntity<>(roleDto, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new RoleNotFoundException(id));
     }
 
     @PutMapping(path = "/roles/{id}")
@@ -43,7 +44,7 @@ public class RoleController {
             @Valid @RequestBody CreateRoleRequest request
         ) {
         if(roleService.notExists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new RoleNotFoundException(id);
         }
         return new ResponseEntity<>(roleService.fullUpdateRole(request, id), HttpStatus.OK);
     }
@@ -54,7 +55,7 @@ public class RoleController {
             @Valid @RequestBody CreateRoleRequest request
     ) {
         if(roleService.notExists(id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new RoleNotFoundException(id);
         }
         return new ResponseEntity<>(roleService.partialUpdateRole(request, id), HttpStatus.OK);
     }
