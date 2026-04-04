@@ -28,6 +28,10 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne()
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
     @Column(name = "content", nullable = false, length = ValidationConstants.MAX_CONTENT_LENGTH)
     private String content;
 

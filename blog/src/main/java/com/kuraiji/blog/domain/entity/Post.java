@@ -28,6 +28,10 @@ public class Post {
     @Column(name = "body", nullable = false, length = ValidationConstants.MAX_BODY_LENGTH)
     private String body;
 
+    @ManyToOne()
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
     @ColumnDefault("now()")
     @Column(name = "created", nullable = false, updatable = false)
     private Instant created;

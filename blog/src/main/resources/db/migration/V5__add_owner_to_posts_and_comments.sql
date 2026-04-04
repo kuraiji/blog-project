@@ -1,0 +1,11 @@
+ALTER TABLE comments
+    ADD owner_id BIGINT;
+
+ALTER TABLE posts
+    ADD owner_id BIGINT;
+
+ALTER TABLE comments
+    ADD CONSTRAINT FK_COMMENTS_ON_OWNER FOREIGN KEY (owner_id) REFERENCES users (id);
+
+ALTER TABLE posts
+    ADD CONSTRAINT FK_POSTS_ON_OWNER FOREIGN KEY (owner_id) REFERENCES users (id);

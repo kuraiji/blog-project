@@ -28,6 +28,7 @@ posts
     - body: string
     - created: timestamp
     - updated: timestamp
+    - owner
 
 comments
     - id: smallint
@@ -35,6 +36,7 @@ comments
     - content: string
     - posted: timestamp
     - updated: timestamp
+    - owner
 
 REST Schema:
 /users
@@ -47,9 +49,9 @@ REST Schema:
     - DELETE
 /roles
     - GET
+    - POST
 /roles/{id}
     - GET
-    - POST
     - PUT
     - PATCH
     - DELETE
@@ -86,6 +88,22 @@ REST Schema:
     - PATCH
     - DELETE
 /users_roles/{user_id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/users_posts/{user_id}
+    - GET
+/users_posts/{user_id}/{post_id}
+    - GET
+    - POST
+    - PUT
+    - PATCH
+    - DELETE
+/users_comments/{user_id}
+    - GET
+/users_comments/{user_id}/{comment_id}
     - GET
     - POST
     - PUT
