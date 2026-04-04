@@ -39,6 +39,8 @@ public class RoleControllerIntegrationTests {
 
     private final RoleService roleService;
 
+    private static final String ROLE_URI = "/v1/roles";
+
     @Autowired
     public RoleControllerIntegrationTests(MockMvc mockMvc, RoleService roleService) {
         this.mockMvc = mockMvc;
@@ -55,7 +57,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/roles")
+                MockMvcRequestBuilders.post(ROLE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -68,7 +70,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/roles")
+                MockMvcRequestBuilders.post(ROLE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -81,7 +83,7 @@ public class RoleControllerIntegrationTests {
     @Test
     public void testThatListRolesReturnsHttpStatus200() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/roles")
+                MockMvcRequestBuilders.get(ROLE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -91,7 +93,7 @@ public class RoleControllerIntegrationTests {
         Role roleA = TestDataUtil.createTestRoleA();
         roleService.createRole(CreateRoleRequest.builder().name(roleA.getName()).build());
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/roles")
+                MockMvcRequestBuilders.get(ROLE_URI)
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
@@ -105,15 +107,15 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         RoleDto roleDto = roleService.createRole(CreateRoleRequest.builder().name(role.getName()).build());
         mockMvc.perform(
-                MockMvcRequestBuilders.get(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.get(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     public void testThatGetRoleReturnsHttpStatus404WhenRoleNotExist() throws Exception {
-        mockMvc.perform(
-                MockMvcRequestBuilders.get("/roles/1")
+        mockMvc.perform(///roles/1
+                MockMvcRequestBuilders.get(String.format("%s/1", ROLE_URI))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -123,7 +125,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         RoleDto roleDto = roleService.createRole(CreateRoleRequest.builder().name(role.getName()).build());
         mockMvc.perform(
-                MockMvcRequestBuilders.get(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.get(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.id").value(Short.toString(roleDto.getId()))
@@ -137,7 +139,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.put("/roles/1")
+                MockMvcRequestBuilders.put(String.format("%s/1", ROLE_URI))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -150,7 +152,7 @@ public class RoleControllerIntegrationTests {
         role.setName("Director");
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.put(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.put(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -163,7 +165,7 @@ public class RoleControllerIntegrationTests {
         role.setName("Director");
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.put(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.put(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -178,7 +180,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.patch("/roles/1")
+                MockMvcRequestBuilders.patch(String.format("%s/1", ROLE_URI))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -191,7 +193,7 @@ public class RoleControllerIntegrationTests {
         role.setName("Director");
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.patch(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.patch(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
@@ -204,7 +206,7 @@ public class RoleControllerIntegrationTests {
         role.setName("Director");
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
-                MockMvcRequestBuilders.patch(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.patch(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(roleJson)
         ).andExpect(
@@ -217,7 +219,7 @@ public class RoleControllerIntegrationTests {
     @Test
     public void testThatDeleteRoleReturnsHttpStatus204ForNonExistingRole() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/roles/1")
+                MockMvcRequestBuilders.delete(String.format("%s/1", ROLE_URI))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -227,7 +229,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         RoleDto roleDto = roleService.createRole(CreateRoleRequest.builder().name(role.getName()).build());
         mockMvc.perform(
-                MockMvcRequestBuilders.delete(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.delete(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -237,7 +239,7 @@ public class RoleControllerIntegrationTests {
         Role role = TestDataUtil.createTestRoleA();
         RoleDto roleDto = roleService.createRole(CreateRoleRequest.builder().name(role.getName()).build());
         mockMvc.perform(
-                MockMvcRequestBuilders.delete(String.format("/roles/%d", roleDto.getId()))
+                MockMvcRequestBuilders.delete(String.format("%s/%d", ROLE_URI, roleDto.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
         );
         assertThat(roleService.notExists(roleDto.getId())).isTrue();
