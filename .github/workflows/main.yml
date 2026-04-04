@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     name: test project
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: checkout code
         uses: actions/checkout@v6
@@ -17,6 +17,7 @@ jobs:
         with:
           distribution: 'corretto'
           java-version: 26
+          cache: 'maven'
 
       - name: unit tests
         run: mvn -B test --file blog/pom.xml
