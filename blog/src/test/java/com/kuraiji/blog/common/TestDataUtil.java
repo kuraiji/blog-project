@@ -7,9 +7,21 @@ import com.kuraiji.blog.domain.entity.Role;
 public final class TestDataUtil {
     private TestDataUtil() {}
 
-    public static Role createTestRole() {
+    public static Role createTestRoleA() {
         return Role.builder()
                 .name("admin")
+                .build();
+    }
+
+    public static Role createTestRoleB() {
+        return Role.builder()
+                .name("user")
+                .build();
+    }
+
+    public static Role createTestRoleC() {
+        return Role.builder()
+                .name("editor")
                 .build();
     }
 

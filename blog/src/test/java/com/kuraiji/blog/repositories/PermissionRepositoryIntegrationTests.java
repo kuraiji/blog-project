@@ -36,7 +36,7 @@ public class PermissionRepositoryIntegrationTests {
 
     @Test
     public void testThatPermissionCanBeCreatedAndRecalled() {
-        Role role = TestDataUtil.createTestRole();
+        Role role = TestDataUtil.createTestRoleA();
         Permission permission = TestDataUtil.createTestPermission(role);
         underTest.save(permission);
         Optional<Permission> result = underTest.findById(permission.getId());

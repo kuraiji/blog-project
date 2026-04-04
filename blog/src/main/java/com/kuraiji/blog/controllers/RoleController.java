@@ -6,9 +6,10 @@ import com.kuraiji.blog.services.RoleService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class RoleController {
@@ -22,5 +23,45 @@ public class RoleController {
     @PostMapping(path = "/roles")
     public ResponseEntity<RoleDto> createRole(@Valid @RequestBody CreateRoleRequest request) {
         return new ResponseEntity<>(roleService.createRole(request), HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/roles")
+    public List<RoleDto> listRoles() {
+        return roleService.findAll();
+    }
+
+    @GetMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> getRole(@PathVariable Short id) {
+        Optional<RoleDto> foundRole = roleService.findOne(id);
+        return foundRole.map(roleDto -> new ResponseEntity<>(roleDto, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> fullUpdateRole(
+            @PathVariable Short id,
+            @Valid @RequestBody CreateRoleRequest request
+        ) {
+        if(roleService.notExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(roleService.fullUpdateRole(request, id), HttpStatus.OK);
+    }
+
+    @PatchMapping(path = "/roles/{id}")
+    public ResponseEntity<RoleDto> partialUpdateRole(
+            @PathVariable Short id,
+            @Valid @RequestBody CreateRoleRequest request
+    ) {
+        if(roleService.notExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(roleService.partialUpdateRole(request, id), HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/roles/{id}")
+    public ResponseEntity<?> deleteRole(@PathVariable Short id) {
+        roleService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

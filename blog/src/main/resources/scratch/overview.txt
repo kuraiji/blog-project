@@ -41,9 +41,9 @@ comments
 REST Schema:
 /users
     - GET
+    - POST
 /users/{id}
     - GET
-    - POST
     - PUT
     - PATCH
     - DELETE

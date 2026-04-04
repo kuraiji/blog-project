@@ -36,7 +36,7 @@ public class RoleRepositoryIntegrationTests {
 
     @Test
     public void testThatRoleCanBeCreatedAndRecalled() {
-        Role role = TestDataUtil.createTestRole();
+        Role role = TestDataUtil.createTestRoleA();
         underTest.save(role);
         Optional<Role> result = underTest.findById(role.getId());
         assertThat(result).isPresent();

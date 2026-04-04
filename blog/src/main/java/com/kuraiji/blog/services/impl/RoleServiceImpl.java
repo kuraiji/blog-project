@@ -8,6 +8,11 @@ import com.kuraiji.blog.repositories.RoleRepository;
 import com.kuraiji.blog.services.RoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -26,5 +31,44 @@ public class RoleServiceImpl implements RoleService {
                 .name(request.getName())
                 .build();
         return roleMapper.mapTo(roleRepository.save(role));
+    }
+
+    @Override
+    public List<RoleDto> findAll() {
+        return StreamSupport.stream(roleRepository.findAll().spliterator(), false)
+                .map(roleMapper::mapTo)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<RoleDto> findOne(Short id) {
+        return roleRepository.findById(id).map(roleMapper::mapTo);
+    }
+
+    @Override
+    public boolean notExists(Short id) {
+        return !roleRepository.existsById(id);
+    }
+
+    @Override
+    public RoleDto fullUpdateRole(CreateRoleRequest request, Short id) {
+        Role role = Role.builder()
+                .name(request.getName())
+                .id(id)
+                .build();
+        return roleMapper.mapTo(roleRepository.save(role));
+    }
+
+    @Override
+    public RoleDto partialUpdateRole(CreateRoleRequest request, Short id) {
+        return roleRepository.findById(id).map(existingRole -> {
+            Optional.ofNullable(request.getName()).ifPresent(existingRole::setName);
+            return roleMapper.mapTo(roleRepository.save(existingRole));
+        }).orElseThrow(() -> new RuntimeException("Role does not exist"));
+    }
+
+    @Override
+    public void delete(Short id) {
+        roleRepository.deleteById(id);
     }
 }
