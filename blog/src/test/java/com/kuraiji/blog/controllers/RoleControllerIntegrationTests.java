@@ -66,7 +66,7 @@ public class RoleControllerIntegrationTests {
     }
 
     @Test
-    public void testThatCreateRoleSuccessfullyReturnsSavedAuthor() throws Exception {
+    public void testThatCreateRoleSuccessfullyReturnsSavedRole() throws Exception {
         Role role = TestDataUtil.createTestRoleA();
         String roleJson = objectMapper.writeValueAsString(role);
         mockMvc.perform(
@@ -114,7 +114,7 @@ public class RoleControllerIntegrationTests {
 
     @Test
     public void testThatGetRoleReturnsHttpStatus404WhenRoleNotExist() throws Exception {
-        mockMvc.perform(///roles/1
+        mockMvc.perform(
                 MockMvcRequestBuilders.get(String.format("%s/1", ROLE_URI))
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(MockMvcResultMatchers.status().isNotFound());

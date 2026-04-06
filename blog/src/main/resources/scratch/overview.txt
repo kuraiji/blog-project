@@ -109,3 +109,6 @@ REST Schema:
     - PUT
     - PATCH
     - DELETE
+
+Misc:
+.password(passwordEncoder().encode("password"))

@@ -2,6 +2,7 @@ package com.kuraiji.blog.repositories;
 
 import com.kuraiji.blog.common.TestDataUtil;
 import com.kuraiji.blog.domain.entity.Role;
+import com.kuraiji.blog.domain.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -15,19 +16,17 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-//@SpringBootTest
-//@ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-//@Transactional
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 @Testcontainers
-public class RoleRepositoryIntegrationTests {
-    private final RoleRepository underTest;
+public class UserRepositoryIntegrationTests {
+    private final UserRepository underTest;
+    private final RoleRepository roleRepo;
 
     @Autowired
-    public RoleRepositoryIntegrationTests(RoleRepository underTest) {
+    public UserRepositoryIntegrationTests(RoleRepository roleRepo, UserRepository underTest) {
         this.underTest = underTest;
+        this.roleRepo = roleRepo;
     }
 
     @Container
@@ -35,20 +34,25 @@ public class RoleRepositoryIntegrationTests {
     static PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:18-alpine");
 
     @Test
-    public void testThatRoleCanBeCreatedAndRecalled() {
+    public void testFindByEmail() {
         Role role = TestDataUtil.createTestRoleA();
-        underTest.save(role);
-        Optional<Role> result = underTest.findById(role.getId());
+        roleRepo.save(role);
+        User user = TestDataUtil.createTestUser(role);
+        underTest.save(user);
+        Optional<User> result = underTest.findByEmail(user.getEmail());
         assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(role);
+        assertThat(result.get()).isEqualTo(user);
     }
 
     @Test
-    public void testFindByName() {
+    public void testRoleIsStoredInUser() {
         Role role = TestDataUtil.createTestRoleA();
-        underTest.save(role);
-        Optional<Role> result = underTest.findByName(role.getName());
+        roleRepo.save(role);
+        User user = TestDataUtil.createTestUser(role);
+        User storedUser = underTest.save(user);
+        Optional<User> result = underTest.findById(storedUser.getId());
         assertThat(result).isPresent();
-        assertThat(result.get()).isEqualTo(role);
+        Role recoveredRole = result.get().getRole();
+        assertThat(recoveredRole).isEqualTo(role);
     }
 }
