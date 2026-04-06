@@ -4,6 +4,7 @@ import com.kuraiji.blog.domain.dto.RoleDto;
 import com.kuraiji.blog.domain.request.CreateRoleRequest;
 import com.kuraiji.blog.exception.RoleNotFoundException;
 import com.kuraiji.blog.services.RoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1")
+@SecurityRequirement(name = "bearerAuth")
 public class RoleController {
 
     private final RoleService roleService;

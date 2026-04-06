@@ -4,6 +4,7 @@ import com.kuraiji.blog.domain.dto.UserDto;
 import com.kuraiji.blog.domain.request.CreateUserRequest;
 import com.kuraiji.blog.exception.UserNotFoundException;
 import com.kuraiji.blog.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,13 @@ public class UserController {
     }
 
     @GetMapping(path = "/users")
+    @SecurityRequirement(name = "bearerAuth")
     public List<UserDto> listUsers() {
         return userService.findAll();
     }
 
     @GetMapping(path = "/users/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         Optional<UserDto> foundUser = userService.findOne(id);
         return foundUser.map(userDto -> new ResponseEntity<>(userDto, HttpStatus.OK))
@@ -37,6 +40,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/users/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserDto> fullUpdateUser(
             @PathVariable Long id,
             @Valid @RequestBody CreateUserRequest request
@@ -48,6 +52,7 @@ public class UserController {
     }
 
     @PatchMapping(path = "/users/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<UserDto> partialUpdateUser(
             @PathVariable Long id,
             @Valid @RequestBody CreateUserRequest request
@@ -59,6 +64,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/users/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> deleteRole(@PathVariable Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

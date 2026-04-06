@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -45,7 +46,13 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/v1/auth");
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+        return pathMatcher.match("/v1/auth", path) ||
+                pathMatcher.match("/actuator/**", path) ||
+                pathMatcher.match("/v3/api-docs/**", path) ||
+                pathMatcher.match("/swagger-ui.html", path) ||
+                pathMatcher.match("/swagger-ui/**", path);
+
     }
 
     private ExtractedUriInfo extractUriInfo(HttpServletRequest request) throws UriNotFoundException {

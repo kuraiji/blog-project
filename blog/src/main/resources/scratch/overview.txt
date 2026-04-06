@@ -110,5 +110,6 @@ REST Schema:
     - PATCH
     - DELETE
 
-Misc:
-.password(passwordEncoder().encode("password"))
+TODO:
+Implement Permissions, Post, and Comment
+Write More Test Units

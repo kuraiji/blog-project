@@ -7,3 +7,5 @@ TRUNCATE TABLE roles CASCADE;
 TRUNCATE TABLE flyway_schema_history;
 ALTER SEQUENCE permission_id_seq RESTART WITH 1;
 ALTER SEQUENCE role_id_seq RESTART WITH 1;
+
+UPDATE users SET role_id = 1 WHERE id = 1;
