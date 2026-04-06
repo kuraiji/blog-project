@@ -1,10 +1,7 @@
 package com.kuraiji.blog.controllers;
 
 import com.kuraiji.blog.domain.dto.ErrorDto;
-import com.kuraiji.blog.exception.AuthorizationInvalidException;
-import com.kuraiji.blog.exception.DatabaseNotInitializedException;
-import com.kuraiji.blog.exception.RoleNotFoundException;
-import com.kuraiji.blog.exception.UserNotFoundException;
+import com.kuraiji.blog.exception.*;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +60,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleAuthorizationInvalidExceptions(AuthorizationInvalidException ex) {
         ErrorDto errorDto = new ErrorDto("You are not authorized to access this");
         return new ResponseEntity<>(errorDto, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(UriNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleUriNotFoundExceptions(UriNotFoundException ex) {
+        ErrorDto errorDto = new ErrorDto("Not a valid resource");
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 }

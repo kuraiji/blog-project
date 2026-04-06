@@ -24,10 +24,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @Testcontainers
 public class PermissionRepositoryIntegrationTests {
     private final PermissionRepository underTest;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public PermissionRepositoryIntegrationTests(PermissionRepository underTest) {
+    public PermissionRepositoryIntegrationTests(PermissionRepository underTest, RoleRepository roleRepository) {
         this.underTest = underTest;
+        this.roleRepository = roleRepository;
     }
 
     @Container
@@ -40,6 +42,17 @@ public class PermissionRepositoryIntegrationTests {
         Permission permission = TestDataUtil.createTestPermission(role);
         underTest.save(permission);
         Optional<Permission> result = underTest.findById(permission.getId());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(permission);
+    }
+
+    @Test
+    public void testFindByRoleAndName() {
+        Role role = TestDataUtil.createTestRoleA();
+        Role savedRole = roleRepository.save(role);
+        Permission permission = TestDataUtil.createTestPermission(savedRole);
+        underTest.save(permission);
+        Optional<Permission> result = underTest.findByRoleAndName(savedRole, permission.getName());
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(permission);
     }
