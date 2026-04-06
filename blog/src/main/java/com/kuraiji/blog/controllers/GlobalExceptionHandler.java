@@ -1,7 +1,10 @@
 package com.kuraiji.blog.controllers;
 
 import com.kuraiji.blog.domain.dto.ErrorDto;
+import com.kuraiji.blog.exception.AuthorizationInvalidException;
+import com.kuraiji.blog.exception.DatabaseNotInitializedException;
 import com.kuraiji.blog.exception.RoleNotFoundException;
+import com.kuraiji.blog.exception.UserNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +43,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleIllegalStateExceptions(IllegalStateException ex) {
         ErrorDto errorDto = new ErrorDto(ex.getMessage());
         return new ResponseEntity<>(errorDto, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleUserNotFoundExceptions(UserNotFoundException ex) {
+        Long userNotFoundId = ex.getId();
+        String errorMessage = String.format("User with ID '%d' not found.", userNotFoundId);
+        ErrorDto errorDto = new ErrorDto(errorMessage);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DatabaseNotInitializedException.class)
+    public ResponseEntity<ErrorDto> handleDatabaseNotInitializedExceptions(DatabaseNotInitializedException ex) {
+        ErrorDto errorDto = new ErrorDto("Database isn't initialized yet.");
+        return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AuthorizationInvalidException.class)
+    public ResponseEntity<ErrorDto> handleAuthorizationInvalidExceptions(AuthorizationInvalidException ex) {
+        ErrorDto errorDto = new ErrorDto("You are not authorized to access this");
+        return new ResponseEntity<>(errorDto, HttpStatus.FORBIDDEN);
     }
 }

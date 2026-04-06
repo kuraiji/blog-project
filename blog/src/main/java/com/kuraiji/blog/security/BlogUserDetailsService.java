@@ -18,4 +18,10 @@ public class BlogUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
         return new BlogUserDetails(user);
     }
+
+    public UserDetails loadUserById(Long id) throws UsernameNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User not found with id: %d", id)));
+        return new BlogUserDetails(user);
+    }
 }

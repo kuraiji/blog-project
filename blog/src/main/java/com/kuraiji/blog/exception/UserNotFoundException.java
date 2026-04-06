@@ -1,5 +1,8 @@
 package com.kuraiji.blog.exception;
 
+import lombok.Getter;
+
+@Getter
 public class UserNotFoundException extends RuntimeException {
     private final Long id;
 

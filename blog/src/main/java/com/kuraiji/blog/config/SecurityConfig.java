@@ -1,11 +1,13 @@
 package com.kuraiji.blog.config;
 
 import com.kuraiji.blog.repositories.UserRepository;
+import com.kuraiji.blog.security.AuthorizationFilter;
 import com.kuraiji.blog.security.BlogUserDetailsService;
 import com.kuraiji.blog.security.JwtAuthenticationFilter;
 import com.kuraiji.blog.services.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Bean
+    @Order(1)
     public JwtAuthenticationFilter jwtAuthenticationFilter(AuthenticationService authenticationService) {
         return new JwtAuthenticationFilter(authenticationService);
     }
@@ -32,9 +35,14 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Order(2)
+    public AuthorizationFilter authorizationFilter(UserDetailsService userDetailsService) {
+        return new AuthorizationFilter(userDetailsService);
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/v1/roles/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/v1/users/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/v1/auth").permitAll()
                 .anyRequest().authenticated()
