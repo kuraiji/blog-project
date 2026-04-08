@@ -20,6 +20,13 @@ public enum PermissionName {
     DELETE_POST("get_post"),
     EDIT_COMMENT("delete_comment"),
     DELETE_COMMENT("get_comment"),
+    CREATE_USER("create_user"),
+    CREATE_ROLE("create_role"),
+    CREATE_PERMISSION("create_permission"),
+    CREATE_POST("create_post"),
+    CREATE_COMMENT("create_comment"),
+    GET_POST("get_post"),
+    GET_COMMENT("get_comment"),
     UNDEFINED("undefined");
 
     private final String name;

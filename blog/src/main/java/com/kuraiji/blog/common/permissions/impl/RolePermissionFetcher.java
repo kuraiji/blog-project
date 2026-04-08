@@ -12,7 +12,7 @@ public class RolePermissionFetcher implements PermissionFetcher {
 
     @Override
     public PermissionName post() {
-        return PermissionName.EDIT_ROLE;
+        return PermissionName.CREATE_ROLE;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class UserPermissionFetcher implements PermissionFetcher {
 
     @Override
     public PermissionName post() {
-        return PermissionName.EDIT_USER;
+        return PermissionName.CREATE_USER;
     }
 
     @Override

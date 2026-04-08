@@ -16,6 +16,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -47,11 +48,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
         AntPathMatcher pathMatcher = new AntPathMatcher();
-        return pathMatcher.match("/v1/auth", path) ||
-                pathMatcher.match("/actuator/**", path) ||
-                pathMatcher.match("/v3/api-docs/**", path) ||
-                pathMatcher.match("/swagger-ui.html", path) ||
-                pathMatcher.match("/swagger-ui/**", path);
+        List<String> patterns = Arrays.asList("/v1/auth", "/actuator/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
+        return patterns.stream().anyMatch(p -> pathMatcher.match(p, path));
 
     }
 

@@ -6,12 +6,12 @@ import com.kuraiji.blog.common.permissions.PermissionName;
 public class CommentPermissionFetcher implements PermissionFetcher {
     @Override
     public PermissionName get() {
-        return PermissionName.UNDEFINED;
+        return PermissionName.GET_COMMENT;
     }
 
     @Override
     public PermissionName post() {
-        return PermissionName.EDIT_COMMENT;
+        return PermissionName.CREATE_COMMENT;
     }
 
     @Override
