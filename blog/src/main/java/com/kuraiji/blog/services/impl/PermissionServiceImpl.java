@@ -66,6 +66,7 @@ public class PermissionServiceImpl implements PermissionService {
         Role role = roleRepository.findById(request.getRoleId())
                 .orElseThrow(() -> new RoleNotFoundException(request.getRoleId()));
         Permission permission = Permission.builder()
+                .id(id)
                 .name(request.getName())
                 .scope(request.getScope())
                 .role(role)

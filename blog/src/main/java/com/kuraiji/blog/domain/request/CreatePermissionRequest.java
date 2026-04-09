@@ -17,12 +17,12 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class CreatePermissionRequest {
 
-    @NotNull(message = "Role Id can't be blank")
+    @NotNull(message = "Role Id can't be null")
     private Short roleId;
 
     @NotBlank(message = "Name can't be blank")
     @Length(max = ValidationConstants.MAX_GENERIC_STRING_LENGTH,
-            message = "Name can't be longer than 255")
+            message = "Name can't be longer than 255 characters")
     private String name;
 
     @NotBlank

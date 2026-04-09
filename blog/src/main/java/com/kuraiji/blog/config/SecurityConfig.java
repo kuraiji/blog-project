@@ -5,7 +5,9 @@ import com.kuraiji.blog.security.AuthorizationFilter;
 import com.kuraiji.blog.security.BlogUserDetailsService;
 import com.kuraiji.blog.security.JwtAuthenticationFilter;
 import com.kuraiji.blog.services.AuthenticationService;
+import com.kuraiji.blog.services.CommentService;
 import com.kuraiji.blog.services.PermissionService;
+import com.kuraiji.blog.services.PostService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,8 +38,12 @@ public class SecurityConfig {
 
     @Bean
     //@Order(2)
-    public AuthorizationFilter authorizationFilter(UserDetailsService userDetailsService) {
-        return new AuthorizationFilter(userDetailsService);
+    public AuthorizationFilter authorizationFilter(
+            UserDetailsService userDetailsService,
+            PostService postService,
+            CommentService commentService
+    ) {
+        return new AuthorizationFilter(userDetailsService, postService, commentService);
     }
 
     @Bean

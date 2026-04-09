@@ -2,9 +2,15 @@ package com.kuraiji.blog.security;
 
 import com.kuraiji.blog.common.permissions.PermissionFetcher;
 import com.kuraiji.blog.common.permissions.impl.*;
+import com.kuraiji.blog.domain.dto.CommentDto;
+import com.kuraiji.blog.domain.dto.PostDto;
 import com.kuraiji.blog.domain.entity.PermissionScope;
 import com.kuraiji.blog.exception.AuthorizationInvalidException;
+import com.kuraiji.blog.exception.CommentNotFoundException;
+import com.kuraiji.blog.exception.PostNotFoundException;
 import com.kuraiji.blog.exception.UriNotFoundException;
+import com.kuraiji.blog.services.CommentService;
+import com.kuraiji.blog.services.PostService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,12 +24,18 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
+
+    private final PostService postService;
+
+    private final CommentService commentService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -112,6 +124,19 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
         if(scope == PermissionScope.NONE) return false;
         if(scope == PermissionScope.ALL) return true;
-        return user.getId() == Long.parseLong(info.getPathVariable());
+        switch (info.getEndpoint()) {
+            case "users":
+                return user.getId() == Long.parseLong(info.getPathVariable());
+            case "posts":
+                UUID postId = UUID.fromString(info.getPathVariable());
+                PostDto post = postService.findOne(postId).orElseThrow(() -> new PostNotFoundException(postId));
+                return Objects.equals(user.getId(), post.getOwner().getId());
+            case "comments":
+                UUID commentId = UUID.fromString(info.getPathVariable());
+                CommentDto comment = commentService.findOne(commentId).orElseThrow(() -> new CommentNotFoundException(commentId));
+                return Objects.equals(user.getId(), comment.getOwner().getId());
+            default:
+                return false;
+        }
     }
 }

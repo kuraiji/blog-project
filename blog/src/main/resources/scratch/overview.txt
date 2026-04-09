@@ -111,5 +111,7 @@ REST Schema:
     - DELETE
 
 TODO:
-Implement Permissions, Post, and Comment
+Java:
 Write More Test Units
+
+Angular:

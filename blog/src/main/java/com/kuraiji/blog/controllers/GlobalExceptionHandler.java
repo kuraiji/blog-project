@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.UUID;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -65,6 +67,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UriNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUriNotFoundExceptions(UriNotFoundException ex) {
         ErrorDto errorDto = new ErrorDto("Not a valid resource");
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorDto> handlePostNotFoundExceptions(PostNotFoundException ex) {
+        UUID id = ex.getId();
+        String errorMessage = String.format("Post with ID '%s' not found.", id);
+        ErrorDto errorDto = new ErrorDto(errorMessage);
+        return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleCommentNotFoundExceptions(CommentNotFoundException ex) {
+        UUID id = ex.getId();
+        String errorMessage = String.format("Comment with ID '%s' not found.", id);
+        ErrorDto errorDto = new ErrorDto(errorMessage);
         return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
     }
 }
