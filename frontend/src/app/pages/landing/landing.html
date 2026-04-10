@@ -1,20 +1,31 @@
-<div class="flex md:flex-row flex-col justify-evenly h-dvh items-center">
-  <span class="md:text-[15rem]">B</span>
+<div class="flex justify-evenly flex-col m-10 md:items-center md:flex-row md:h-dvh md:m-0">
+  <span class="md:text-[15rem] md:mb-0 text-2xl mb-10">B</span>
   <div class="col">
     <div class="mb-10">
-      <span class="font-bold text-6xl">Happening now</span>
+      <span class="font-bold md:text-6xl text-4xl">Happening now</span>
     </div>
     <div class="mb-3">
-      <span class="font-bold text-2xl">Join today.</span>
+      <span class="font-bold md:text-2xl text-xl">Join today.</span>
     </div>
-    <div class="mb-5">
-      <a class="" routerLink="/">Create account</a>
+    <div class="mb-20">
+      <app-button (onClickEvent)="showCreateAccount()">Create account</app-button>
     </div>
+    <dialog [id]="createAccountId" class="modal">
+      <div class="modal-box md:w-7xl md:h-auto md:max-w-xl h-screen w-screen max-w-dvw">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <app-create-account/>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
     <div class="mb-3">
-      <span class="text-xl">Already have an account?</span>
+      <span class="md:text-xl text-lg font-medium">Already have an account?</span>
     </div>
     <div>
-      <a class="" routerLink="/">Sign in</a>
+      <app-button [style]="ButtonStyle.Outline">Sign in</app-button>
     </div>
   </div>
 </div>

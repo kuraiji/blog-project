@@ -1,0 +1,26 @@
+<fieldset class="fieldset md:bg-base-200 md:border-base-300 md:rounded-box w-full md:border p-4 flex flex-col items-center">
+  <legend class="fieldset-legend">Create Account</legend>
+
+  <div class="w-80 flex flex-col">
+    <label class="label">Handle</label>
+    <input type="text" [formControl]="handle" class="input" placeholder="MyHandle"/>
+  </div>
+
+  <div class="w-80 flex flex-col">
+    <label class="label">Email</label>
+    <input type="email" [formControl]="email" class="input" placeholder="example@me.com"/>
+  </div>
+
+  <div class="w-80 flex flex-col">
+    <label class="label">Password</label>
+    <input type="password" [formControl]="password" class="input"/>
+  </div>
+
+  <div class="w-80 flex flex-col">
+    <label class="label">Confirm Password</label>
+    <input type="password" [formControl]="confirmPassword" class="input"/>
+  </div>
+
+  <app-button class="w-80 p-4 flex items-center justify-center">Create</app-button>
+
+</fieldset>

@@ -115,3 +115,6 @@ Java:
 Write More Test Units
 
 Angular:
+Create Account Finish w/ Validation
+Sign in Component
+Angular Testing GitHub Workflow
