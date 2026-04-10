@@ -11,6 +11,8 @@ import {ButtonStyle} from '@enums/button-style';
 export class Button {
   readonly type = input<ButtonType>(ButtonType.Neutral);
   readonly style = input<ButtonStyle>(ButtonStyle.Normal);
+  readonly isSubmit = input<boolean>(false);
+  readonly isDisabled = input<boolean>(false);
   readonly onClickEvent = output<void>();
   onClick = (): void => {
     this.onClickEvent.emit();

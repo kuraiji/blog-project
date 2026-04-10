@@ -1,6 +1,7 @@
 package com.kuraiji.blog.domain.request;
 
 import com.kuraiji.blog.common.constants.ValidationConstants;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class CreateUserRequest {
     @NotBlank(message = "Email can't be blank")
     @Length(max = ValidationConstants.MAX_EMAIL_LENGTH,
             message = "Email can't be longer than 254")
+    @Email
     private String email;
 
     @NotBlank(message = "Password")

@@ -1,3 +1,7 @@
-<button class="btn {{style()}} {{type()}} btn-wide rounded-4xl" (click)="onClick()">
+<button class="btn {{style()}} {{type()}} btn-wide rounded-4xl"
+        (click)="onClick()"
+        type="{{isSubmit() ? 'submit' : ''}}"
+        [disabled]="isDisabled()"
+>
   <ng-content></ng-content>
 </button>

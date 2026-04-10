@@ -59,6 +59,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
+        log.info(path);
+        log.info(request.getMethod());
+        if(Objects.equals(request.getMethod(), "OPTIONS")) return true;
+        if(Objects.equals(path, "/v1/users") && Objects.equals(request.getMethod(), "POST")) return true;
         AntPathMatcher pathMatcher = new AntPathMatcher();
         List<String> patterns = Arrays.asList("/v1/auth", "/actuator/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
         return patterns.stream().anyMatch(p -> pathMatcher.match(p, path));

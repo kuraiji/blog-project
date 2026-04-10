@@ -1,26 +1,45 @@
 <fieldset class="fieldset md:bg-base-200 md:border-base-300 md:rounded-box w-full md:border p-4 flex flex-col items-center">
   <legend class="fieldset-legend">Create Account</legend>
 
-  <div class="w-80 flex flex-col">
-    <label class="label">Handle</label>
-    <input type="text" [formControl]="handle" class="input" placeholder="MyHandle"/>
-  </div>
+  <form [formGroup]="createAccountForm" (ngSubmit)="onSubmit()">
+    <div class="w-80 flex flex-col">
+      <label for="handle" class="label">Handle</label>
+      <input id="handle" type="text" formControlName="handle" class="input validator" placeholder="MyHandle" required maxlength="15"/>
+      <p class="validator-hint hidden">Must be less than 15 characters, and not empty</p>
+    </div>
 
-  <div class="w-80 flex flex-col">
-    <label class="label">Email</label>
-    <input type="email" [formControl]="email" class="input" placeholder="example@me.com"/>
-  </div>
+    <div class="w-80 flex flex-col">
+      <label for="email" class="label">Email</label>
+      <input id="email" type="email" formControlName="email" class="input validator" placeholder="example@me.com" required maxlength="254"/>
+      <div class="validator-hint hidden">Enter valid email address</div>
+    </div>
 
-  <div class="w-80 flex flex-col">
-    <label class="label">Password</label>
-    <input type="password" [formControl]="password" class="input"/>
-  </div>
+    <div class="w-80 flex flex-col">
+      <label for="password" class="label">Password</label>
+      <input id="password" type="password" formControlName="password" class="input validator" required
+             minlength="8" maxlength="30" [pattern]="PASSWORD_REGEX" (change)="onKeyUp($event)"
+             title="Must be more than 8 characters, but less than 30, including one number, one lowercase letter, and one uppercase letter"
+      />
+      <p class="validator-hint hidden">
+        Must be more than 8 characters, but less than 30, including
+        <br/>At least one number
+        <br/>At least one lowercase letter
+        <br/>At least one uppercase letter
+      </p>
+    </div>
 
-  <div class="w-80 flex flex-col">
-    <label class="label">Confirm Password</label>
-    <input type="password" [formControl]="confirmPassword" class="input"/>
-  </div>
+    <div class="w-80 flex flex-col">
+      <label for="confirmPassword" class="label">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" class="input validator" required
+             (keyup)="onKeyUp($event)"
+      />
+      <div class="validator-hint hidden">Must equal the same as password</div>
+    </div>
 
-  <app-button class="w-80 p-4 flex items-center justify-center">Create</app-button>
+    <app-button [isDisabled]="onIsNotValid()" [isSubmit]="true" class="w-80 p-4 flex items-center justify-center"
+    >
+      Create
+    </app-button>
+  </form>
 
 </fieldset>

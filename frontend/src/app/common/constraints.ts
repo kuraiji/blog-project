@@ -1,0 +1,10 @@
+export const MAX_GENERIC_STRING_LENGTH = 255;
+export const MAX_HANDLE_LENGTH = 15;
+export const MAX_EMAIL_LENGTH = 254;
+export const MAX_PHASH_LENGTH = 72;
+export const MAX_PASSWORD_LENGTH = 30;
+export const MIN_PASSWORD_LENGTH = 8;
+export const MAX_BODY_LENGTH = 280;
+export const MAX_TITLE_LENGTH = 60;
+export const MAX_CONTENT_LENGTH = 140;
+export const PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
