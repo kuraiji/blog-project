@@ -13,4 +13,5 @@ public final class ValidationConstants {
     public static final int MAX_TITLE_LENGTH = 60;
     public static final int MAX_CONTENT_LENGTH = 140;
     public static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+    public static final String COOKIE_NAME = "auth-token";
 }
